@@ -3,13 +3,19 @@ NPC::NPC(Player* self, playerController* controller, Player* enemy,Arena* arena)
 
 }
 
+void NPC::searchEnemy()
+{
+	this->arena->startSearch(self->getCoordinate(), e->getCoordinate());
+}
+
 void NPC::update()
 {
 	adjustPlayerDirection();
-	controller->isLeftMouseButtonPressed = true;
+	//controller->isLeftMouseButtonPressed = true;
 	/*if (isInLineOfSight(self->getCoordinate(), e->getCoordinate())) {
 		
 	}*/
+	searchEnemy();
 	
 }
 

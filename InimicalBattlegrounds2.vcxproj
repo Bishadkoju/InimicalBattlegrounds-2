@@ -157,6 +157,7 @@
     <ClCompile Include="source\GameClient.cpp" />
     <ClCompile Include="source\GameServer.cpp" />
     <ClCompile Include="source\MainMenu.cpp" />
+    <ClCompile Include="source\Node.cpp" />
     <ClCompile Include="source\NPC.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\playerController.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="include\GameClient.h" />
     <ClInclude Include="include\GameServer.h" />
     <ClInclude Include="include\MainMenu.h" />
+    <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\NPC.h" />
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\playerController.h" />

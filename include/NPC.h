@@ -13,6 +13,7 @@ private:
 public:
 	NPC();
 	NPC(Player*, playerController*,Player*,Arena*);
+	void searchEnemy();
 	void update();
 	void adjustPlayerDirection();
 	bool isInLineOfSight(sf::Vector2f, sf::Vector2f);

@@ -449,8 +449,7 @@ void Player::movePlayer(sf::Vector2f maxVelocity, float dampingConstant)
 
 void Player::bulletHit(float damagePoints)
 {
-	this->health-= damagePoints;
-	std::cout << health << std::endl;
+	this->health-= damagePoints*0.3;
 	if (health < 0) {
 		isAlive = false;
 	}
