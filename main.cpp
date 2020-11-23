@@ -1,24 +1,23 @@
-#include <SFML/Graphics.hpp>
+
+#include<iostream>
+#include "MainMenu.h"
+#include "Connect.h"
+#include "SoloGame.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+	/*MainMenu menu(800, 800);
+menu.display();*/
+SoloGame solo(800, 800);
+solo.run();
 
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+//Game game(800, 800);
+//	game.run();
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
+	/*Connect connect(800, 800);
+	connect.run();*/
 
-    return 0;
+
+	return 0;
 }
+
