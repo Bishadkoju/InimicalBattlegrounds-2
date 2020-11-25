@@ -9,9 +9,8 @@ class MainMenu
 private:
 	Audio *audioManager;
 	sf::RenderWindow window;
-	sf::Texture texture, playTexture, exitTexture, playTexture1, exitTexture1;
-	sf::Sprite sprite, playSprite, exitSprite, playSprite1, exitSprite1;
-	sf::RectangleShape playSoloButton;
+	sf::Texture texture, splayTexture, exitTexture, splayTexture1, exitTexture1,mplayTexture,mplayTexture1;
+	sf::Sprite sprite, splaySprite, exitSprite, splaySprite1, exitSprite1,mplaySprite,mplaySprite1;
 	sf::Vector2f mousePosition;
 public:
 	MainMenu( int width,int height);
