@@ -35,7 +35,7 @@ void SoloGame::run()
 	sf::Clock clock;
 
 	p.initialize("4", sf::Vector2f(300, 500));
-	e.initialize("3", sf::Vector2f(400, 800));
+	e.initialize("3", sf::Vector2f(800, 800));
 	while (window.isOpen())
 	{
 		sf::Time deltaTime = clock.restart();
