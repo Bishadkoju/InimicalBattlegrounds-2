@@ -7,7 +7,6 @@ class NPC
 {
 private:
 	Player *self, *e;
-	double detectionRadiusSquared = 100000;
 	sf::Clock mouseClickCooldownTimer;
 	Arena* arena;
 	playerController *controller;
@@ -16,15 +15,19 @@ private:
 public:
 	NPC();
 	NPC(Player*, playerController*,Player*,Arena*);
+	double detectionRadiusSquared = 100000;
 	void searchEnemy();
 	void update();
 	void adjustPlayerDirection();
-	bool isInRange();
+	bool isInRange(float distance);
 	bool isInLineOfSight(sf::Vector2f, sf::Vector2f);
 	bool liesInBlock(sf::Vector2f point);
 	void draw(sf::RenderWindow& window);
 	void clickMouse(std::string);
 	void changeState(State* nextState);
 	void clearCurrentPath();
+	void playerMoveTo(sf::Vector2f goalCoordinate);
+	void chaseEnemy();
+	void resetButtonPress();
 };
 

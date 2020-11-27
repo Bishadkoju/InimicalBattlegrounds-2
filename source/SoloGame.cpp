@@ -24,6 +24,7 @@ SoloGame::SoloGame(int width, int height )
 	sgLose.setPosition(400, 600);
 	p.setArena(arena1);
 	e.setArena(arena1);
+	e.isFuelInfinite = true;
 	//e.setCoordinate(sf::Vector2f(0, 800));
 	npc = new NPC(&e, &enemyController,&p,&arena1);
 

@@ -28,10 +28,10 @@ void NPC::adjustPlayerDirection()
 	controller->mousePosition = e->getCoordinate();
 }
 
-bool NPC::isInRange()
+bool NPC::isInRange(float distance)
 {
 	float distanceSquared = pow(self->getCoordinate().x - e->getCoordinate().x, 2) + pow(self->getCoordinate().y - e->getCoordinate().y, 2);
-	return (distanceSquared < detectionRadiusSquared);
+	return (distanceSquared < distance);
 }
 
 bool NPC::isInLineOfSight(sf::Vector2f start, sf::Vector2f end)
@@ -98,5 +98,28 @@ void NPC::changeState(State* nextState)
 void NPC::clearCurrentPath()
 {
 	arena->currentPath.clear();
+}
+
+void NPC::playerMoveTo(sf::Vector2f goalCoordinate)
+{
+	controller->isPressedLeft = (goalCoordinate.x < self->getCoordinate().x);
+	controller->isPressedRight = (goalCoordinate.x > self->getCoordinate().x);
+	controller->isPressedUp = (goalCoordinate.y < self->getCoordinate().y);
+	
+
+}
+
+void NPC::chaseEnemy()
+{
+	playerMoveTo(arena->currentPath[0]->getPosition());
+}
+
+void NPC::resetButtonPress()
+{
+	controller->isLeftMouseButtonPressed = false;
+	controller->isRightMouseButtonPressed = false;
+	controller->isPressedLeft = false;
+	controller->isPressedRight = false;
+	controller->isPressedUp = false;
 }
 

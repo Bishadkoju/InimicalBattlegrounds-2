@@ -421,10 +421,14 @@ void Player::movePlayer(sf::Vector2f maxVelocity, float dampingConstant)
 	if (isPressedUp) {
 		if (fuel>100||(fuel>1 &&currentVelocity.y<0)) {
 			targetVelocity.y -= deltaTime.asSeconds() * thrustValue;
-			fuel -= thrustValue*3 * deltaTime.asSeconds();
+			if (!isFuelInfinite) {
+				fuel -= thrustValue * 3 * deltaTime.asSeconds();
+			}
 		}
 		else {
-			fuel -= thrustValue * 5 * deltaTime.asSeconds();
+			if (!isFuelInfinite) {
+				fuel -= thrustValue * 5 * deltaTime.asSeconds();
+			}
 		}
 
 	}

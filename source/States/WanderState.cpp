@@ -20,7 +20,7 @@ void WanderState::enter(NPC* npc)
 void WanderState::execute(NPC* npc)
 {
 	//std::cout << "WanderState Executing \n";
-	if (npc->isInRange()) {
+	if (npc->isInRange(npc->detectionRadiusSquared)) {
 		npc->changeState(AttackState::Instance());
 	}
 }
