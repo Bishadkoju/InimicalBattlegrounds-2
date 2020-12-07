@@ -24,6 +24,7 @@ SoloGame::SoloGame(int width, int height )
 	sgLose.setPosition(400, 600);
 	p.setArena(arena1);
 	e.setArena(arena1);
+	e.isFuelInfinite = true;
 	//e.setCoordinate(sf::Vector2f(0, 800));
 	npc = new NPC(&e, &enemyController,&p,&arena1);
 
@@ -35,7 +36,7 @@ void SoloGame::run()
 	sf::Clock clock;
 
 	p.initialize("4", sf::Vector2f(300, 500));
-	e.initialize("3", sf::Vector2f(400, 800));
+	e.initialize("3", sf::Vector2f(800, 800));
 	while (window.isOpen())
 	{
 		sf::Time deltaTime = clock.restart();

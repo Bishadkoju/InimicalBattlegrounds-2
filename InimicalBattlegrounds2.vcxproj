@@ -168,6 +168,8 @@
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\playerController.cpp" />
     <ClCompile Include="source\SoloGame.cpp" />
+    <ClCompile Include="source\States\AttackState.cpp" />
+    <ClCompile Include="source\States\WanderState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Animation.h" />
@@ -186,6 +188,9 @@
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\playerController.h" />
     <ClInclude Include="include\SoloGame.h" />
+    <ClInclude Include="include\States\AttackState.h" />
+    <ClInclude Include="include\States\State.h" />
+    <ClInclude Include="include\States\WanderState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

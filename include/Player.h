@@ -86,6 +86,7 @@ private:
 	
 public:
 
+	bool isFuelInfinite = false;
 	bool isAlive;
 	float health = 100;
 	std::vector<Bullet> bullets;
