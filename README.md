@@ -20,7 +20,7 @@ ___
 - Download and install SFML  https://www.sfml-dev.org/download/sfml/2.5.1/
 - Properly configure SFML https://www.sfml-dev.org/tutorials/2.5/start-vc.php
 - Additional include directories: ./include
-- Additional source directories: ./src \
+- Additional source directories: ./src 
 
 Note: Copy pic and AudioAssets folder where the exe file is.
 
@@ -29,3 +29,8 @@ Note: Copy pic and AudioAssets folder where the exe file is.
 - Bishad Koju (075BCT025)
 - Gaurav Jyakhwa (075BCT037)
 - Kriti Nyoupane (075BCT043)
+
+![plot](./pic/MainScreen.png) \
+![plot](./pic/ConnectScreen.png) \
+![plot](./pic/Gameplay.png) \
+![plot](./pic/GameOver.png) 
