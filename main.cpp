@@ -6,10 +6,10 @@
 
 int main()
 {
-	/*MainMenu menu(800, 800);
-menu.display();*/
-SoloGame solo(800, 800);
-solo.run();
+	MainMenu menu(800, 800);
+menu.display();
+//SoloGame solo(800, 800);
+//solo.run();
 
 //Game game(800, 800);
 //	game.run();

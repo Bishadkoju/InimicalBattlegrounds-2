@@ -4,6 +4,7 @@ Player::Player():isPressedLeft(false),isPressedRight(false),isPressedUp(false),i
 {
 	audioManager.load(PlayerFiring, "AudioAssets/gun.wav");
 	audioManager.load(PlayerReloading, "AudioAssets/gunReload.wav");
+	audioManager.load(emptyBullet, "AudioAssets/gun_empty.wav");
 	healthTexture.loadFromFile("pic/avatar/health.png");
 	fuelTexture.loadFromFile("pic/avatar/fuel.png");
 
@@ -123,21 +124,27 @@ void Player::update(sf::Time deltaTime,playerController userController,Player& e
 	//fire bullets
 
 
-	if (isLeftMouseButtonPressed && bulletClock.getElapsedTime().asSeconds()>0.4f && bulletsOnRound>0 && !isReloading) {
-		if (facingRight == true) {
-			bullets.emplace_back(Bullet(playerHandRight.getPosition(), mouseDirection, 1000, 0.2));
-			
-			audioManager.playSound(PlayerFiring);
-		}
-		else {
-			sf::Vector2f temp = playerHandLeft.getPosition();
-			temp.x=playerHandLeft.getPosition().x ;
-			bullets.emplace_back(Bullet(temp, mouseDirection, 1000, 0.2));
-			audioManager.playSound(PlayerFiring);
-		}
-		bulletsOnRound--;
-		bulletClock.restart();
+	if (isLeftMouseButtonPressed && bulletClock.getElapsedTime().asSeconds()>0.4f && !isReloading) {
+		if (bulletsOnRound > 0)
+		{
+			if (facingRight == true) {
+				bullets.emplace_back(Bullet(playerHandRight.getPosition(), mouseDirection, 1000, 0.2));
 
+				audioManager.playSound(PlayerFiring);
+			}
+			else {
+				sf::Vector2f temp = playerHandLeft.getPosition();
+				temp.x = playerHandLeft.getPosition().x;
+				bullets.emplace_back(Bullet(temp, mouseDirection, 1000, 0.2));
+				audioManager.playSound(PlayerFiring);
+			}
+			bulletsOnRound--;
+		}
+		else
+		{
+			audioManager.playSound(emptyBullet);
+		}
+		bulletClock.restart();
 	}
 	if (isRightMouseButtonPressed && (bulletsOnRound<bulletsPerRoundMaximum) && !isReloading) {
 		isReloading = true;
@@ -421,10 +428,14 @@ void Player::movePlayer(sf::Vector2f maxVelocity, float dampingConstant)
 	if (isPressedUp) {
 		if (fuel>100||(fuel>1 &&currentVelocity.y<0)) {
 			targetVelocity.y -= deltaTime.asSeconds() * thrustValue;
-			fuel -= thrustValue*3 * deltaTime.asSeconds();
+			if (!isFuelInfinite) {
+				fuel -= thrustValue * 3 * deltaTime.asSeconds();
+			}
 		}
 		else {
-			fuel -= thrustValue * 5 * deltaTime.asSeconds();
+			if (!isFuelInfinite) {
+				fuel -= thrustValue * 5 * deltaTime.asSeconds();
+			}
 		}
 
 	}
