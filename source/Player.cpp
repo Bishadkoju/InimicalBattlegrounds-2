@@ -29,14 +29,7 @@ Player::Player():isPressedLeft(false),isPressedRight(false),isPressedUp(false),i
 	}
 	ammoSprite.setTexture(ammoTexture);
 	ammoSprite.setScale(0.1, 0.1);
-
-	totalBullets = 36;
-	bulletsPerRoundMaximum = 6;
-	bulletsOnRound = 6;
-	
 	isReloading = false;
-
-
 	coordinate.x = 200;
 	coordinate.y = 200;
 	currentVelocity.x = 0;
@@ -44,8 +37,8 @@ Player::Player():isPressedLeft(false),isPressedRight(false),isPressedUp(false),i
 	targetVelocity.x = 0;
 	targetVelocity.y = 0;
 	maxGroundVelocity.x =20;
-	maxAirVelocity.x = 40;
-	maxAirVelocity.y = 70;
+	maxAirVelocity.x = 25;
+	maxAirVelocity.y = 40;
 	thrustValue = 80;
 
 	texture.loadFromFile("pic/army1.png");
@@ -55,8 +48,8 @@ Player::Player():isPressedLeft(false),isPressedRight(false),isPressedUp(false),i
 
 	groundDampingConstant = 500;
 	airDampingConstant = 50;
-	gravity = 50;
-	elasticConstant = 0.3f;
+	gravity = 55;
+	elasticConstant = 0.25;
 	collider = (new Collider(body));
 	//collider.body = this->body;
 
@@ -106,6 +99,8 @@ void Player::update(sf::Time deltaTime,playerController userController,Player& e
 	this->isLeftMouseButtonPressed = userController.isLeftMouseButtonPressed;
 	this->isRightMouseButtonPressed = userController.isRightMouseButtonPressed;
 	this->mousePosition = userController.mousePosition;
+	health += 0.03;
+	if (health > 100) health = 100;
 	//std::cout << bulletsOnRound << " / "<< totalBullets<< std::endl;
 
 	//std::cout << mousePosition.x << "," << mousePosition.y << "||"<<mouseDirection.x << "," << mouseDirection.y << std::endl;
@@ -122,7 +117,6 @@ void Player::update(sf::Time deltaTime,playerController userController,Player& e
 
 	setBulletDir();
 	//fire bullets
-
 
 	if (isLeftMouseButtonPressed && bulletClock.getElapsedTime().asSeconds()>0.4f && !isReloading) {
 		if (bulletsOnRound > 0)
@@ -143,6 +137,7 @@ void Player::update(sf::Time deltaTime,playerController userController,Player& e
 		else
 		{
 			audioManager.playSound(emptyBullet);
+
 		}
 		bulletClock.restart();
 	}
@@ -216,6 +211,11 @@ void Player::setCoordinate(float x, float y)
 	this->coordinate = temp;
 }
 
+sf::Vector2f Player::getCenter()
+{
+	return sf::Vector2f(this->coordinate.x+this->body.getSize().x/2,this->coordinate.y+this->body.getSize().y/2);
+}
+
 
 
 Collider Player::getCollider()
@@ -233,6 +233,12 @@ sf::Vector2f Player::getCoordinate()
 sf::Vector2f Player::getVelocity()
 {
 	return this->currentVelocity;
+}
+
+sf::Vector2f Player::getNormalVelocity()
+{
+	float magnitude = sqrt(pow(this->currentVelocity.x, 2) + pow(this->currentVelocity.y, 2));
+	return (1/magnitude)*this->currentVelocity;
 }
 
 float Player::interpolateVelocity(float target, float current, float dampingFactor)
@@ -440,6 +446,8 @@ void Player::movePlayer(sf::Vector2f maxVelocity, float dampingConstant)
 
 	}
 	targetVelocity.y += deltaTime.asSeconds() * gravity;
+	if (targetVelocity.y > maxAirVelocity.y) targetVelocity.y = maxAirVelocity.y;
+	if (targetVelocity.y < -maxAirVelocity.y) targetVelocity.y = -maxAirVelocity.y;
 	fuel += 60 * deltaTime.asSeconds();
 	if (fuel > 1000) fuel = 1000;
 	if (fuel < 0) fuel = 0;

@@ -5,7 +5,7 @@ class Animation
 {
 private:
 	static constexpr int nFrames = 4;
-	static constexpr float holdTime = 4.0;
+	static constexpr float holdTime = 1.5;
 	sf::Texture texture;
 	sf::IntRect frames[nFrames];
 	int iFrame = 0;
