@@ -7,11 +7,14 @@
 class Arena
 {
 public:
+	bool showNode = false;
+	bool showEdge = false;
+	bool showPath = false;
 	static constexpr int noOfBlocks = 34;
 	sf::RectangleShape blocks[noOfBlocks];
 	std::vector<Node*> node_object;
 	sf::RectangleShape limit_box;
-	int step = 43;
+	int step = 40;
 	std::vector<sf::Vector2f>direction;
 	Node* startingNode;
 	//sf::Vector2f sizes[noOfBlocks], positions[noOfBlocks];
@@ -52,5 +55,9 @@ public:
 	float calculateDistance(Node* currentNode, Node* targetedNode);
 	void startSearch(sf::Vector2f startingCoordinate, sf::Vector2f goalCoordinate);
 	bool isInVectorList(Node* node, std::vector<Node*> nodeList);
+	bool isInLineOfSight(sf::Vector2f a, sf::Vector2f b);
 	std::vector<Node*> tracePath(Node* targetNode);
+private:
+	bool isLineSegmentIntersecting(sf::Vector2f a, sf::Vector2f b, sf::Vector2f c, sf::Vector2f d);
+	bool isLineSegmentIntersectingBlock(sf::Vector2f a, sf::Vector2f b, sf::RectangleShape block);
 };

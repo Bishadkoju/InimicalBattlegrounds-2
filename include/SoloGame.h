@@ -33,6 +33,7 @@ protected:
 	//int isHost;
 	sf::CircleShape shape;
 
+
 public:
 	SoloGame(int width, int height);
 	void run();

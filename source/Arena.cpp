@@ -2,8 +2,8 @@
 
 Arena::Arena()
 {
-	limit_box.setPosition(0, 0);
-	limit_box.setSize(sf::Vector2f(1700, 1000));
+	limit_box.setPosition(130, 100);
+	limit_box.setSize(sf::Vector2f(1700, 800));
 	textureBackImag.loadFromFile("pic/newarena.png");
 	spriteBackGroundImage.setTexture(textureBackImag);
 	spriteBackGroundImage.scale(2, 1.3);
@@ -45,29 +45,31 @@ void Arena::draw(sf::RenderWindow& window)
 		mp.y = sf::Mouse::getPosition().y;
 		std::cout << "(" << mp.x << "," << mp.y << ")" << std::endl;
 	}*/
-	for (const auto block : blocks) {
-		window.draw(block);
-	}
-	for (const auto node : node_object)
-	{
-		node->draw(window);
-	}
-	/*for (const auto node : node_object)
-	{
-		for (const auto neighbour : node->neighbours)
+
+	if (showNode) {
+		for (const auto node : node_object)
 		{
-			if (getNodeById(neighbour))
+			node->draw(window);
+		}
+	}
+	if (showEdge) {
+		for (const auto node : node_object)
+		{
+			for (const auto neighbour : node->neighbours)
 			{
-				sf::Vertex line[]{
-						sf::Vertex(node->getPosition()),
-						sf::Vertex(getNodeById(neighbour)->getPosition())
-				};
-				window.draw(line, 2, sf::Lines);
+				if (getNodeById(neighbour))
+				{
+					sf::Vertex line[]{
+							sf::Vertex(node->getPosition()),
+							sf::Vertex(getNodeById(neighbour)->getPosition())
+					};
+					window.draw(line, 2, sf::Lines);
+				}
 			}
 		}
-	}*/
+	}
 
-	if (currentPath.size() > 2)
+	if (currentPath.size() > 2 && showPath)
 	{
 		for (int i = 0; i < currentPath.size() - 1; i++)
 		{
@@ -128,24 +130,25 @@ void Arena::expandNode(Node* self)
 	for (int i = 0; i < direction.size(); i++)
 	{
 		projectedCoord = self->getPosition() + direction[i];
-		if (nodeExists(projectedCoord))
-		{
-			neighbour = getnode(projectedCoord);
-			if (neighbour)
+			if (nodeExists(projectedCoord))
 			{
-				neighbour->add_to_neighbours(self->getId());
-				self->add_to_neighbours(neighbour->getId());
+				neighbour = getnode(projectedCoord);
+				if (neighbour)
+				{
+					neighbour->add_to_neighbours(self->getId());
+					self->add_to_neighbours(neighbour->getId());
+				}
 			}
-		}
-		else
-		{
-			if (is_freespace(projectedCoord))
+			else
 			{
-				newNode = createNode(projectedCoord);
-				node_object.push_back(newNode);
-				expandNode(newNode);
+				if (is_freespace(projectedCoord))
+				{
+					newNode = createNode(projectedCoord);
+					node_object.push_back(newNode);
+					expandNode(newNode);
+				}
 			}
-		}
+		
 	}
 }
 
@@ -177,11 +180,13 @@ Node* Arena::getNearestNode(sf::Vector2f playerPosition)
 	shortDistance = pow(playerPosition.x - node_object[0]->getPosition().x, 2) + pow(playerPosition.y - node_object[0]->getPosition().y, 2);
 	for (const auto node : node_object)
 	{
-		if (shortDistance > (pow(playerPosition.x - node->getPosition().x, 2) + pow(playerPosition.y - node->getPosition().y, 2)))
-		{
-			shortDistance = pow(playerPosition.x - node->getPosition().x, 2) + pow(playerPosition.y - node->getPosition().y, 2);
-			nearestNode = node;
-		}
+		//if (isInLineOfSight(node->getPosition(), playerPosition)) {
+			if (shortDistance > (pow(playerPosition.x - node->getPosition().x, 2) + pow(playerPosition.y - node->getPosition().y, 2)))
+			{
+				shortDistance = pow(playerPosition.x - node->getPosition().x, 2) + pow(playerPosition.y - node->getPosition().y, 2);
+				nearestNode = node;
+			}
+		//}
 	}
 	return nearestNode;
 }
@@ -262,6 +267,53 @@ void Arena::startSearch(sf::Vector2f startingCoordinate, sf::Vector2f goalCoordi
 bool Arena::isInVectorList(Node* node, std::vector<Node*> nodeList)
 {
 	return std::find(nodeList.begin(), nodeList.end(), node) != nodeList.end();
+}
+
+bool Arena::isLineSegmentIntersecting(sf::Vector2f a, sf::Vector2f b, sf::Vector2f c, sf::Vector2f d)
+{
+	float denominator = (a.x - b.x) * (c.y - d.y) - (a.y - b.y) * (c.x - d.x);
+	if (denominator == 0) {
+		return false;
+	}
+	float t = ((a.x - c.x) * (c.y - d.y) - (a.y - c.y) * (c.x - d.x)) / denominator;
+	float u = -((a.x - b.x) * (a.y - c.y) - (a.y - b.y) * (a.x - c.x)) / denominator;
+	//std::cout << t << " = ";
+	return (t >= 0 && t <= 1) && (u >= 0 && u <= 1);
+}
+
+bool Arena::isLineSegmentIntersectingBlock(sf::Vector2f a, sf::Vector2f b, sf::RectangleShape block)
+{
+	int count = 0;
+	sf::Vector2f topLeft = block.getPosition();
+	sf::Vector2f topRight = sf::Vector2f(block.getPosition().x + block.getSize().x, block.getPosition().y);
+	sf::Vector2f bottomRight = sf::Vector2f(block.getPosition().x + block.getSize().x, block.getPosition().y + block.getSize().y);
+	sf::Vector2f bottomLeft = sf::Vector2f(block.getPosition().x, block.getPosition().y + block.getSize().y);
+
+	if (isLineSegmentIntersecting(a, b, topLeft, topRight)) {
+		count++;
+		//cout << "Top " << endl;
+	};
+	if (isLineSegmentIntersecting(a, b, topRight, bottomRight)) {
+		count++;
+		//cout << "Right " << endl;
+	};
+	if (isLineSegmentIntersecting(a, b, bottomRight, bottomLeft)) {
+		count++;
+		//cout << "Bottom " << endl;
+	};
+	if (isLineSegmentIntersecting(a, b, bottomLeft, topLeft)) {
+		count++;
+		//cout << "Left " << endl;
+	};
+	return count == 0;
+}
+
+bool Arena::isInLineOfSight(sf::Vector2f a, sf::Vector2f b)
+{
+	for (int i = 0; i < noOfBlocks;i++) {
+		if (!isLineSegmentIntersectingBlock(a, b, blocks[i])) return false;
+	}
+	return true;
 }
 
 std::vector<Node*> Arena::tracePath(Node* targetNode)
