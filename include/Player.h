@@ -14,9 +14,6 @@
 class Player
 {
 private:
-
-	
-	
 	// Physics Related Stuffs
 	sf::Vector2f coordinate;
 	sf::Vector2f currentVelocity;
@@ -89,6 +86,8 @@ public:
 	bool isFuelInfinite = false;
 	bool isAlive;
 	float health = 100;
+
+	float bulletDamagePoints;
 	std::vector<Bullet> bullets;
 	sf::RectangleShape body;
 	sf::Vector2f mouseDirection;
@@ -98,11 +97,12 @@ public:
 	
 	sf::Vector2f playerCenter;
 	
-	int totalBullets;
-	int bulletsPerRoundMaximum;
-	int bulletsOnRound;
 	sf::Clock reloadClock;
 	bool isReloading;
+	int totalBullets = 36;
+	int bulletsPerRoundMaximum = 6;
+	int bulletsOnRound = 6;
+	float bulletDamagePoint = 0.15;
 	
 	void bulletHit(float damagePoints);
 	void setBulletDir();
@@ -112,11 +112,13 @@ public:
 	void update(sf::Time,playerController userController,Player &enemy);
 	void setCoordinate(sf::Vector2f);
 	void setCoordinate(float x, float y);
+	sf::Vector2f getCenter();
 
 	Collider *collider;
 	Collider getCollider();
 	sf::Vector2f getCoordinate();
 	sf::Vector2f getVelocity();
+	sf::Vector2f getNormalVelocity();
 	float interpolateVelocity(float target,float current,float dampingFactor);
 	void draw(sf::RenderWindow& window);
 	void setArena(Arena& arena);

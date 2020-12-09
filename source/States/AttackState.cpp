@@ -1,6 +1,7 @@
 #include "States/AttackState.h"
 #include "NPC.h"
 #include "States/WanderState.h"
+#include "States/FleeState.h"
 AttackState::AttackState()
 {
 }
@@ -19,14 +20,21 @@ void AttackState::enter(NPC* npc)
 void AttackState::execute(NPC* npc)
 {
 	npc->adjustPlayerDirection();
-	npc->searchEnemy();
 	
-	if (npc->isInRange(npc->detectionRadiusSquared)) {
+	
+	if (npc->isInRange(npc->detectionRadiusSquared) || npc->isEnemyInSight()) {
+		if (!npc->canFight()) {
+			npc->changeState(FleeState::Instance());
+		}
+		if (npc->isEnemyInSight()) {
+			npc->fire();
+		}		
 		if (!npc->isInRange(npc->detectionRadiusSquared / 5)) {
-			npc->chaseEnemy();
+			npc->searchEnemy();
+			npc->followPath();
 		}
 		else {
-			npc->resetButtonPress();
+			npc->resetKeyboardPress();
 		}
 	}else{
 		npc->changeState(WanderState::Instance());
@@ -37,6 +45,6 @@ void AttackState::execute(NPC* npc)
 void AttackState::exit(NPC* npc)
 {
 	npc->clearCurrentPath();
-	npc->resetButtonPress();
+	npc->resetKeyboardPress();
 	std::cout << "AttackState Exiting \n";
 }

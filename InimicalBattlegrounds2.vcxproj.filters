@@ -78,6 +78,9 @@
     <ClCompile Include="source\States\AttackState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
+    <ClCompile Include="source\States\FleeState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Animation.h">
@@ -135,6 +138,9 @@
       <Filter>Header Files\States</Filter>
     </ClInclude>
     <ClInclude Include="include\States\AttackState.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="include\States\FleeState.h">
       <Filter>Header Files\States</Filter>
     </ClInclude>
   </ItemGroup>
