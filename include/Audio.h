@@ -7,7 +7,7 @@
 #include <map>
 
 enum AudioId {
-	PlayerFiring,PlayerReloading,PlayerWalking,Theme
+	PlayerFiring,PlayerReloading,PlayerWalking,Theme,emptyBullet
 	,TotalAudio
 };
 

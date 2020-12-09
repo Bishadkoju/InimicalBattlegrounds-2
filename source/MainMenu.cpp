@@ -12,31 +12,40 @@ MainMenu::MainMenu(int width, int height) :window(sf::VideoMode(width,height), "
 	sprite.setPosition(sf::Vector2f(480, -25));
 	sprite.scale(2, 2);
 	//actual photo of play and exit button
-	//play button
-	playTexture.loadFromFile("pic/font/play.png");
+	//single play button
+	splayTexture.loadFromFile("pic/font/splay.png");
 	
-	playSprite.setTexture(playTexture);
-	playSprite.setPosition(sf::Vector2f(840, 500));
+	splaySprite.setTexture(splayTexture);
+	splaySprite.setPosition(sf::Vector2f(760, 550));
 
-	playSoloButton.setSize(sf::Vector2f(100, 50));
-	playSoloButton.setFillColor(sf::Color::Blue);
-	playSoloButton.setPosition(sf::Vector2f(840, 800));
+	//multiplay button
+	mplayTexture.loadFromFile("pic/font/mplay.png");
+
+	mplaySprite.setTexture(mplayTexture);
+	mplaySprite.setPosition(sf::Vector2f(760, 650));
+
 	//exit button
 	exitTexture.loadFromFile("pic/font/exit.png");
 	
 	exitSprite.setTexture(exitTexture);
-	exitSprite.setPosition(sf::Vector2f(840, 600));
+	exitSprite.setPosition(sf::Vector2f(760, 750));
 	//for on mouse hover
-	//on mouse hover on play button
-	playTexture1.loadFromFile("pic/font/play1.png");
+	//on mouse hover on single play button
+	splayTexture1.loadFromFile("pic/font/splay1.png");
 
-	playSprite1.setTexture(playTexture1);
-	playSprite1.setPosition(sf::Vector2f(840, 500));
+	splaySprite1.setTexture(splayTexture1);
+	splaySprite1.setPosition(sf::Vector2f(760, 550));
+
+	//on mouse hover on multi play button
+	mplayTexture1.loadFromFile("pic/font/mplay1.png");
+
+	mplaySprite1.setTexture(mplayTexture1);
+	mplaySprite1.setPosition(sf::Vector2f(760, 650));
 	//on mouse hover on exit button
 	exitTexture1.loadFromFile("pic/font/exit1.png");
 	
 	exitSprite1.setTexture(exitTexture1);
-	exitSprite1.setPosition(sf::Vector2f(840, 600));
+	exitSprite1.setPosition(sf::Vector2f(760, 750));
 
 }
 
@@ -58,12 +67,13 @@ void MainMenu::display()
 		}
 		window.clear();
 		window.draw(sprite);
-		window.draw(playSprite1);
+		window.draw(splaySprite1);
+		window.draw(mplaySprite1);
 		window.draw(exitSprite1);
-		window.draw(playSoloButton);
-		if (isSpriteHover(playSprite1.getGlobalBounds()))
+		if (isSpriteHover(mplaySprite1.getGlobalBounds()))
 		{
-			window.draw(playSprite);
+			window.draw(mplaySprite);
+			window.draw(splaySprite1);
 			window.draw(exitSprite1);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
@@ -83,7 +93,8 @@ void MainMenu::display()
 		if (isSpriteHover(exitSprite1.getGlobalBounds()))
 		{
 			window.draw(exitSprite);
-			window.draw(playSprite1);
+			window.draw(mplaySprite1);
+			window.draw(splaySprite1);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
 				//std::cout << "exitclicked"<<std::endl;
@@ -91,9 +102,11 @@ void MainMenu::display()
 				
 			}
 		}
-		if (isSpriteHover(playSoloButton.getGlobalBounds()))
+		if (isSpriteHover(splaySprite.getGlobalBounds()))
 		{
-			std::cout << "HOvered" << "\n";
+			window.draw(exitSprite1);
+			window.draw(mplaySprite1);
+			window.draw(splaySprite);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
 				std::cout << "Clicked"<<std::endl;
